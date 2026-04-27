@@ -8,6 +8,44 @@ const base = isHome ? "" : B;
 ---
 
 <footer class="bg-ink text-white/80">
+  <!-- GSB Mutter-Banner -->
+  <div class="border-b border-white/10">
+    <div class="mx-auto max-w-7xl px-5 lg:px-8 py-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+      <a
+        href="https://www.gsb.bayern"
+        target="_blank"
+        rel="noopener"
+        class="group shrink-0 inline-flex items-center justify-center bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:shadow-brand/20 transition-all duration-300 hover:-translate-y-1"
+        aria-label="GSB Sonderabfall-Entsorgung Bayern"
+      >
+        <img src={`${B}logos/gsb-logo.png`} alt="GSB Sonderabfall-Entsorgung Bayern Logo" class="h-16 w-auto" />
+      </a>
+      <div class="flex-1 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 text-xs font-bold tracking-[0.3em] uppercase text-brand mb-2">
+          <span class="block w-8 h-px bg-brand"></span>
+          Teil der GSB-Gruppe
+        </div>
+        <h3 class="text-white text-xl sm:text-2xl font-bold mb-2 leading-snug">
+          Eine 100&nbsp;%-Tochter der GSB&nbsp;– Sonderabfall-Entsorgung Bayern
+        </h3>
+        <p class="text-sm text-white/65 leading-relaxed max-w-2xl">
+          Als Teil der GSB profitieren wir von jahrzehntelanger Erfahrung im
+          Umgang mit gefährlichen Abfällen – und garantieren eine lückenlose,
+          gesetzeskonforme Entsorgung in zertifizierten Anlagen.
+        </p>
+      </div>
+      <a
+        href="https://www.gsb.bayern"
+        target="_blank"
+        rel="noopener"
+        class="shrink-0 inline-flex items-center gap-2 rounded-full border border-white/30 hover:border-brand text-white hover:text-brand px-5 py-2.5 text-sm font-semibold transition-colors"
+      >
+        Zur GSB
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+
   <div class="mx-auto max-w-7xl px-5 lg:px-8 py-16 grid gap-10 md:grid-cols-3">
     <div>
       <img src={`${B}logos/slb-logo-white.svg`} alt="SLB" class="h-12 w-auto mb-5" />
@@ -46,12 +84,8 @@ const base = isHome ? "" : B;
         <li><a href={`${base}#leistungen`} class="hover:text-brand transition-colors">Leistungen</a></li>
         <li><a href={`${base}#fahrzeuge`} class="hover:text-brand transition-colors">Fahrzeuge</a></li>
         <li><a href={`${base}#karriere`} class="hover:text-brand transition-colors">Karriere</a></li>
-        <li>
-          <a href="https://www.gsb.bayern" target="_blank" rel="noopener" class="hover:text-brand transition-colors inline-flex items-center gap-1">
-            Muttergesellschaft GSB
-            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round"/></svg>
-          </a>
-        </li>
+        <li><a href={`${base}#kontakt`} class="hover:text-brand transition-colors">Kontakt</a></li>
+        <li><a href={`${base}#uns`} class="hover:text-brand transition-colors">Über Uns</a></li>
       </ul>
     </div>
   </div>
