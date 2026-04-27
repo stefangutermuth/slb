@@ -65,14 +65,6 @@ const vehicles = [
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
               <div class="vcard-spot pointer-events-none absolute inset-0"></div>
-
-              <div class="vcard-cta absolute inset-x-0 bottom-0 px-5 py-3 flex items-center justify-between text-white text-sm font-semibold">
-                <span class="inline-flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-brand"></span>
-                  Mehr erfahren
-                </span>
-                <svg class="w-4 h-4 vcard-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
             </div>
 
             <div class="absolute top-3 left-4 sm:top-5 sm:left-5 text-white font-bold text-sm tracking-widest num-badge drop-shadow-lg">
@@ -108,8 +100,8 @@ const vehicles = [
   }
   .vcard.is-tilting {
     transform: perspective(1400px) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
-    transition: transform 0.12s linear, box-shadow 0.4s;
-    box-shadow: 0 30px 60px -25px rgba(148, 193, 32, 0.45);
+    transition: transform 0.18s linear, box-shadow 0.4s;
+    box-shadow: 0 18px 40px -25px rgba(148, 193, 32, 0.18);
   }
 
   .vcard-inner {
@@ -122,60 +114,47 @@ const vehicles = [
     will-change: transform;
   }
   .vcard.is-tilting .vcard-img,
-  .vcard:hover .vcard-img { transform: scale(1.08); }
+  .vcard:hover .vcard-img { transform: scale(1.02); }
 
   /* Spotlight folgt Cursor */
   .vcard-spot {
     background: radial-gradient(
-      circle 220px at var(--mx) var(--my),
-      rgba(148, 193, 32, 0.45) 0%,
-      rgba(148, 193, 32, 0.15) 30%,
-      transparent 65%
+      circle 180px at var(--mx) var(--my),
+      rgba(148, 193, 32, 0.12) 0%,
+      rgba(148, 193, 32, 0.04) 35%,
+      transparent 70%
     );
     opacity: 0;
-    transition: opacity 0.4s;
+    transition: opacity 0.5s;
     mix-blend-mode: screen;
   }
   .vcard:hover .vcard-spot,
   .vcard.is-tilting .vcard-spot { opacity: 1; }
 
-  /* Glanz-Sweep diagonal */
+  /* Glanz-Sweep diagonal — sehr dezent */
   .vcard-shine {
     background: linear-gradient(115deg,
-      transparent 40%,
-      rgba(255,255,255,0.0) 49%,
-      rgba(255,255,255,0.5) 50%,
-      rgba(255,255,255,0.0) 51%,
-      transparent 60%);
+      transparent 44%,
+      rgba(255,255,255,0.12) 50%,
+      transparent 56%);
     transform: translateX(-110%);
     opacity: 0;
   }
   .vcard:hover .vcard-shine {
     opacity: 1;
-    animation: vshine 1.1s cubic-bezier(.4,0,.2,1) forwards;
+    animation: vshine 1.4s cubic-bezier(.4,0,.2,1) forwards;
   }
   @keyframes vshine {
     from { transform: translateX(-110%); }
     to   { transform: translateX(110%); }
   }
 
-  /* CTA-Bar slide-in von unten */
-  .vcard-cta {
-    background: linear-gradient(180deg, transparent 0%, rgba(15, 125, 64, 0.85) 60%, rgba(15, 125, 64, 0.95) 100%);
-    backdrop-filter: blur(4px);
-    transform: translateY(110%);
-    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-  }
-  .vcard:hover .vcard-cta { transform: translateY(0); }
-  .vcard-arrow { transition: transform 0.4s cubic-bezier(.2,.8,.2,1); }
-  .vcard:hover .vcard-arrow { transform: translateX(6px); }
-
-  /* Spec-Pill animiert */
-  .vcard-spec { transition: transform 0.4s cubic-bezier(.2,.8,.2,1), background 0.3s; }
-  .vcard:hover .vcard-spec { transform: translateY(-2px) scale(1.05); }
+  /* Spec-Pill ganz leicht */
+  .vcard-spec { transition: transform 0.4s cubic-bezier(.2,.8,.2,1); }
+  .vcard:hover .vcard-spec { transform: translateY(-1px); }
 
   @media (prefers-reduced-motion: reduce) {
-    .vcard, .vcard-img, .vcard-cta, .vcard-shine, .vcard-spec { animation: none !important; transition: none !important; transform: none !important; }
+    .vcard, .vcard-img, .vcard-shine, .vcard-spec { animation: none !important; transition: none !important; transform: none !important; }
   }
   @media (hover: none) {
     .vcard.is-tilting { transform: none; }
@@ -188,7 +167,7 @@ const vehicles = [
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (window.matchMedia("(hover: none)").matches) return;
     const cards = document.querySelectorAll(".vcard");
-    const MAX = 8; // max Tilt-Grad
+    const MAX = 1.5; // max Tilt-Grad — bewusst sehr dezent
     cards.forEach((card) => {
       let raf = 0;
       function onMove(e) {
