@@ -1,16 +1,26 @@
 ---
 const B = import.meta.env.BASE_URL;
+const slides = [
+  { src: `${B}images/slb-man-sonnenaufgang.jpeg`,           alt: "SLB MAN-Sattelzug bei Sonnenaufgang" },
+  { src: `${B}images/slb-saugdrucktankzug-edelstahl-alpen.jpeg`, alt: "SLB Saug-/Drucktankzug vor alpiner Kulisse" },
+  { src: `${B}images/slb-saugdrucktankzug-schwarz-halle.jpeg`,   alt: "Schwarzer SLB Saug-/Drucktankzug am Industriestandort" },
+  { src: `${B}images/slb-55.jpg`,                                 alt: "SLB Tankzug für Sonderabfall-Logistik" },
+];
 ---
 
 <section id="top" class="relative min-h-[100svh] sm:min-h-[640px] sm:h-screen w-full overflow-hidden bg-ink">
   <div class="absolute inset-0">
-    <div class="absolute -inset-y-32 inset-x-0" data-parallax-y="0.25">
-      <img
-        src={`${B}images/slb-man-sonnenaufgang.jpeg`}
-        alt="SLB MAN-Sattelzug bei Sonnenaufgang – Sonderabfall-Logistik in Bayern"
-        class="w-full h-full object-cover scale-105 hero-img"
-        fetchpriority="high"
-      />
+    <div class="absolute -inset-y-32 inset-x-0" data-parallax-y="0.25" id="hero-slides">
+      {slides.map((s, i) => (
+        <img
+          src={s.src}
+          alt={s.alt}
+          class={`hero-slide absolute inset-0 w-full h-full object-cover scale-105 ${i === 0 ? "is-active hero-img" : ""}`}
+          data-i={i}
+          fetchpriority={i === 0 ? "high" : undefined}
+          loading={i === 0 ? "eager" : "lazy"}
+        />
+      ))}
     </div>
     <div class="absolute inset-0 hero-overlay"></div>
     <canvas id="hero-particles" class="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen opacity-80"></canvas>
@@ -59,6 +69,19 @@ const B = import.meta.env.BASE_URL;
     </div>
   </div>
 
+  <div class="absolute bottom-8 right-5 sm:right-8 z-10 flex items-center gap-3" aria-label="Hero-Bilder">
+    {slides.map((_, i) => (
+      <button
+        type="button"
+        class={`hero-dot group relative h-1.5 rounded-full transition-all duration-500 ${i === 0 ? "w-10 bg-brand" : "w-5 bg-white/30 hover:bg-white/60"}`}
+        data-i={i}
+        aria-label={`Bild ${i + 1} zeigen`}
+      >
+        <span class="hero-dot-progress absolute inset-y-0 left-0 w-0 bg-white/60 rounded-full"></span>
+      </button>
+    ))}
+  </div>
+
   <a
     href="#leistungen"
     class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-white/70 hover:text-white transition-colors flex flex-col items-center gap-2"
@@ -70,13 +93,23 @@ const B = import.meta.env.BASE_URL;
 </section>
 
 <style>
-  .hero-img {
-    animation: heroZoom 18s ease-in-out infinite alternate;
+  .hero-slide {
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(.4,0,.2,1);
+    will-change: opacity;
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+    animation: heroZoom 9s ease-out forwards;
   }
   @keyframes heroZoom {
     from { transform: scale(1.05); }
-    to   { transform: scale(1.15); }
+    to   { transform: scale(1.18); }
   }
+  .hero-dot-progress {
+    transition: width linear;
+  }
+  .hero-dot.is-active .hero-dot-progress { width: 100%; }
   .hero-grid {
     background-image:
       linear-gradient(rgba(148, 193, 32, 0.08) 1px, transparent 1px),
@@ -102,11 +135,63 @@ const B = import.meta.env.BASE_URL;
   .animate-glow-2 { animation: glow2 18s ease-in-out infinite; }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-img, .animate-glow, .animate-glow-2 { animation: none !important; }
+    .hero-slide, .animate-glow, .animate-glow-2 { animation: none !important; transition: none !important; }
+    .hero-slide.is-active { opacity: 1; }
   }
 </style>
 
 <script is:inline>
+  // Hero-Slider mit Cross-Fade, Auto-Advance, Pause on Hover
+  (function () {
+    const root = document.getElementById("hero-slides");
+    if (!root) return;
+    const slides = Array.from(root.querySelectorAll(".hero-slide"));
+    const dots = Array.from(document.querySelectorAll(".hero-dot"));
+    if (slides.length < 2) return;
+    const DURATION = 6000;
+    let i = 0, paused = false, timer;
+
+    function show(next) {
+      slides[i].classList.remove("is-active");
+      dots[i]?.classList.remove("is-active");
+      dots[i]?.classList.replace("w-10", "w-5");
+      dots[i]?.classList.replace("bg-brand", "bg-white/30");
+      i = (next + slides.length) % slides.length;
+      slides[i].classList.add("is-active");
+      const d = dots[i];
+      if (d) {
+        d.classList.replace("w-5", "w-10");
+        d.classList.replace("bg-white/30", "bg-brand");
+        const p = d.querySelector(".hero-dot-progress");
+        if (p) {
+          p.style.transition = "none";
+          p.style.width = "0%";
+          requestAnimationFrame(() => {
+            p.style.transition = "width " + DURATION + "ms linear";
+            p.style.width = "100%";
+          });
+        }
+      }
+    }
+    function tick() { if (!paused) show(i + 1); }
+    function start() { stop(); timer = setInterval(tick, DURATION); show(i); }
+    function stop() { if (timer) clearInterval(timer); }
+
+    dots.forEach((d) => d.addEventListener("click", () => {
+      const n = parseInt(d.getAttribute("data-i") || "0", 10);
+      show(n); start();
+    }));
+
+    const hero = root.closest("section");
+    hero?.addEventListener("mouseenter", () => { paused = true; });
+    hero?.addEventListener("mouseleave", () => { paused = false; });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop(); else start();
+    });
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) start();
+  })();
+
   (function () {
     const c = document.getElementById("hero-particles");
     if (!c) return;
