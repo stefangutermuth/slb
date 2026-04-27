@@ -117,15 +117,17 @@ const B = import.meta.env.BASE_URL;
   }
 
   .career-badge {
-    animation: careerFloat 6s ease-in-out infinite;
+    animation: careerFloat 8s ease-in-out infinite;
     transform-origin: center;
+    backface-visibility: hidden;
+    will-change: transform;
   }
   @keyframes careerFloat {
-    0%,100% { transform: translateY(0) rotate(2deg); }
-    50%     { transform: translateY(-6px) rotate(-2deg); }
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-5px); }
   }
   .career-stage:hover .career-badge {
-    transform: translateY(-10px) rotate(4deg) scale(1.05);
+    transform: translateY(-8px) scale(1.04);
     transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
     animation: none;
   }
