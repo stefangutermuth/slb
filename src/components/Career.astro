@@ -90,17 +90,19 @@ const B = import.meta.env.BASE_URL;
       </div>
 
       <div class="lg:col-span-2 reveal reveal-delay-2">
-        <div class="career-stage relative" style="perspective: 1200px;">
-          <figure class="career-img relative aspect-[3/4] rounded-3xl shadow-2xl">
-            <img
-              src={`${B}images/slb-24.jpg`}
-              alt="SLB LKW-Fahrer im Führerhaus mit Helm und Warnweste"
-              class="career-photo absolute inset-0 w-full h-[125%] -top-[12%] object-cover"
-              data-parallax-y="0.35"
-            />
-            <span class="career-wipe"></span>
-          </figure>
-          <div class="career-badge absolute -bottom-4 left-2 sm:-bottom-6 sm:-left-6 bg-brand-dark text-white rounded-2xl p-4 sm:p-5 shadow-xl max-w-[200px] z-10">
+        <div class="relative">
+          <div class="career-stage relative" style="perspective: 1200px;">
+            <figure class="career-img relative aspect-[3/4] rounded-3xl shadow-2xl">
+              <img
+                src={`${B}images/slb-24.jpg`}
+                alt="SLB LKW-Fahrer im Führerhaus mit Helm und Warnweste"
+                class="career-photo absolute inset-0 w-full h-[125%] -top-[12%] object-cover"
+                data-parallax-y="0.35"
+              />
+              <span class="career-wipe"></span>
+            </figure>
+          </div>
+          <div class="career-badge absolute -bottom-4 left-2 sm:-bottom-6 sm:-left-6 bg-brand-dark text-white rounded-2xl p-4 sm:p-5 shadow-xl max-w-[200px] z-20">
             <div class="text-xs uppercase tracking-widest text-brand mb-1">Wir sind</div>
             <div class="font-bold leading-snug">Ein verlässliches Team mit Tradition.</div>
           </div>
@@ -157,7 +159,7 @@ const B = import.meta.env.BASE_URL;
     0%,100% { transform: translateY(0); }
     50%     { transform: translateY(-5px); }
   }
-  .career-stage:hover .career-badge {
+  .career-stage:hover ~ .career-badge {
     transform: translateY(-8px) scale(1.04);
     transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
     animation: none;
