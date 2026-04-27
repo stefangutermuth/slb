@@ -1,0 +1,48 @@
+# Netlify / Cloudflare Pages / Vercel Redirects
+# Format: /alt  /neu  301
+
+# Legal
+/datenschutzerklaerung    /datenschutz    301
+/datenschutz-erklaerung   /datenschutz    301
+/privacy                  /datenschutz    301
+/imprint                  /impressum      301
+/legal-notice             /impressum      301
+
+# Section anchors
+/leistungen               /#leistungen    301
+/services                 /#leistungen    301
+/abfallarten              /#leistungen    301
+/entsorgung               /#leistungen    301
+
+/uns                      /#uns           301
+/ueber-uns                /#uns           301
+/ueber                    /#uns           301
+/about                    /#uns           301
+/unternehmen              /#uns           301
+
+/fahrzeuge                /#fahrzeuge     301
+/fuhrpark                 /#fahrzeuge     301
+/vehicles                 /#fahrzeuge     301
+/lkw                      /#fahrzeuge     301
+
+/karriere                 /#karriere      301
+/jobs                     /#karriere      301
+/stellenangebote          /#karriere      301
+/career                   /#karriere      301
+
+/kontakt                  /#kontakt       301
+/contact                  /#kontakt       301
+/anfahrt                  /#kontakt       301
+/standort                 /#kontakt       301
+
+# WP-Pfade
+/wp-admin/*               /               301
+/wp-login.php             /               301
+/wp-content/*             /               301
+/feed                     /               301
+/author/*                 /               301
+/category/*               /               301
+/tag/*                    /               301
+
+# Fallback: alles unbekannte auf Startseite (statt 404)
+/*                        /               404

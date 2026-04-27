@@ -1,0 +1,202 @@
+---
+const stats = [
+  { value: "100", suffix: "%", label: "Tochter der GSB Bayern" },
+  { value: "30", suffix: "+", label: "Jahre Erfahrung" },
+  { value: "40", suffix: " m³", label: "max. Transportvolumen" },
+  { value: "4", suffix: "", label: "Fahrzeug­kategorien" },
+];
+const B = import.meta.env.BASE_URL;
+---
+
+<section id="uns" class="relative py-24 lg:py-32 overflow-hidden">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div class="reveal">
+        <div class="about-stage relative" style="perspective: 1200px;">
+          <figure
+            data-parallax="main"
+            class="about-img relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl"
+          >
+            <img
+              src={`${B}images/slb-32.jpg`}
+              alt="SLB Fahrzeug im Einsatz"
+              class="w-full h-full object-cover"
+            />
+            <span class="about-wipe"></span>
+          </figure>
+
+          <figure
+            data-parallax="float"
+            class="about-img about-float hidden md:block absolute -bottom-12 -right-12 w-2/5 aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-white"
+          >
+            <img
+              src={`${B}images/slb-29.jpg`}
+              alt="SLB Detail"
+              class="w-full h-full object-cover"
+            />
+            <span class="about-wipe"></span>
+          </figure>
+
+          <div class="about-badge absolute -top-4 left-2 sm:-top-6 sm:-left-6 bg-brand text-ink rounded-2xl px-5 py-3 sm:px-6 sm:py-4 shadow-xl">
+            <div class="text-3xl font-bold num-badge">SLB</div>
+            <div class="text-xs font-semibold tracking-wider uppercase">seit 2012</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="reveal text-xs font-bold tracking-[0.3em] uppercase text-brand-dark mb-4">
+          Über uns
+        </div>
+        <h2 class="reveal reveal-delay-1 text-3xl sm:text-4xl lg:text-5xl font-bold text-ink leading-tight">
+          Spezialist für sicheren <span class="text-brand-dark">Sonderabfall-Transport</span>
+        </h2>
+        <div class="reveal reveal-delay-2 mt-6 space-y-5 text-ink-soft leading-relaxed">
+          <p>
+            Als 100%iges Tochterunternehmen der GSB unterhält die SLB einen
+            Fahrzeugpark, der auf den Transport von gefährlichen Abfällen
+            optimal ausgerichtet ist. Speziell geschulte Fahrer befördern
+            Abfälle aus Gewerbe, Industrie und Entsorgungswirtschaft direkt
+            zu Entsorgungsstandorten.
+          </p>
+          <p>
+            Die SLB ist ein hochspezialisierter Logistikdienstleister im
+            Bereich Sonderabfall-Transporte. Wir arbeiten mit modernem
+            Fahrzeugpark, geschultem Personal und zertifizierten
+            Entsorgungsbetrieben zusammen. Bis 2012 firmierten wir unter dem
+            Namen Sibein GmbH.
+          </p>
+        </div>
+
+        <div class="reveal reveal-delay-3 mt-10 grid grid-cols-2 gap-6 sm:gap-8">
+          {stats.map((s) => (
+            <div class="border-l-2 border-brand pl-4">
+              <div class="text-2xl sm:text-4xl font-bold text-ink num-badge" data-counter={s.value} data-counter-suffix={s.suffix}>0{s.suffix}</div>
+              <div class="text-xs sm:text-sm text-ink-soft mt-1">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-stage { transform-style: preserve-3d; }
+
+  /* Reveal: opacity + leichter Slide statt Clip-Path (stabil bei 3D-Transform) */
+  .about-img {
+    opacity: 0;
+    transform: translate3d(-24px, 0, 0);
+    transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1), box-shadow 0.7s;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    isolation: isolate;
+  }
+  .reveal.is-visible .about-img {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Hartes Clipping mit runden Ecken — bleibt stabil bei 3D-Transforms */
+  [data-parallax="main"]  { clip-path: inset(0 round 1.5rem); }
+  [data-parallax="float"] { clip-path: inset(0 round 1rem); }
+
+  .about-img img {
+    transition: transform 0.9s cubic-bezier(.2,.7,.2,1);
+    will-change: transform;
+  }
+
+  /* Hover-Tilt: beide Bilder neigen sich entgegengesetzt */
+  .about-stage:hover [data-parallax="main"] {
+    transform: translate3d(var(--px,0), var(--py,0), 0) rotateY(-4deg) rotateX(2deg);
+    box-shadow: 0 35px 60px -25px rgba(15,125,64,0.45);
+  }
+  .about-stage:hover [data-parallax="float"] {
+    transform: translate3d(var(--fx,0), var(--fy,0), 0) rotateY(6deg) rotateX(-3deg) translateZ(40px);
+    box-shadow: 0 35px 60px -20px rgba(15,125,64,0.55);
+  }
+  .about-stage:hover .about-img img { transform: scale(1.06); }
+
+  /* Brand-Wipe: schmaler, leuchtender Streifen über das Bild (kein Mix-Blend → keine Transparenz) */
+  .about-wipe {
+    position: absolute; inset: 0;
+    background: linear-gradient(115deg,
+      transparent 42%,
+      rgba(255,255,255,0.18) 49%,
+      rgba(148,193,32,0.55) 50%,
+      rgba(255,255,255,0.18) 51%,
+      transparent 58%);
+    transform: translateX(-110%);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .about-img:hover .about-wipe { opacity: 1; }
+  .about-img:hover .about-wipe {
+    animation: wipe 0.9s cubic-bezier(.4,0,.2,1) forwards;
+  }
+  @keyframes wipe {
+    from { transform: translateX(-110%); }
+    to   { transform: translateX(110%); }
+  }
+
+  /* Badge sanft schwebend */
+  .about-badge {
+    animation: float 6s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50%     { transform: translateY(-6px) rotate(2deg); }
+  }
+  .about-stage:hover .about-badge {
+    transform: translateY(-10px) rotate(-4deg) scale(1.05);
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-img, .about-img img, .about-badge, .about-wipe { animation: none !important; transition: none !important; clip-path: none !important; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const section = document.getElementById("uns");
+    const main = section?.querySelector('[data-parallax="main"]');
+    const floatEl = section?.querySelector('[data-parallax="float"]');
+    if (!section || !main || !floatEl) return;
+
+    let inView = false;
+    let raf = 0;
+
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => (inView = e.isIntersecting)),
+      { threshold: 0 }
+    );
+    io.observe(section);
+
+    function tick() {
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // -1 (section unten am Viewport) ... 1 (section oben raus)
+      const t = (rect.top + rect.height / 2 - vh / 2) / vh;
+      const my = Math.max(-30, Math.min(30, -t * 30));
+      const fy = Math.max(-50, Math.min(50, t * 45));
+      main.style.setProperty("--py", my + "px");
+      floatEl.style.setProperty("--fy", fy + "px");
+      // Anwenden, wenn nicht gehovert
+      if (!main.matches(":hover") && !floatEl.matches(":hover") && !main.parentElement.matches(":hover")) {
+        main.style.transform = `translate3d(0, ${my}px, 0)`;
+        floatEl.style.transform = `translate3d(0, ${fy}px, 0)`;
+      }
+    }
+
+    function loop() {
+      if (inView) tick();
+      raf = requestAnimationFrame(loop);
+    }
+    loop();
+  })();
+</script>

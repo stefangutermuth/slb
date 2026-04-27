@@ -1,0 +1,85 @@
+---
+const B = import.meta.env.BASE_URL;
+const path = Astro.url.pathname.replace(/\/$/, "");
+const root = B.replace(/\/$/, "");
+const isHome = path === root || path === "";
+const base = isHome ? "" : B;
+const nav = [
+  { label: "Leistungen", href: `${base}#leistungen` },
+  { label: "Über Uns", href: `${base}#uns` },
+  { label: "Fahrzeuge", href: `${base}#fahrzeuge` },
+  { label: "Karriere", href: `${base}#karriere` },
+  { label: "Kontakt", href: `${base}#kontakt` },
+];
+const homeHref = isHome ? "#top" : B;
+const ctaHref = `${base}#kontakt`;
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 inset-x-0 z-50 transition-all duration-300"
+>
+  <div class="mx-auto max-w-7xl px-5 lg:px-8 flex items-center justify-between h-16 sm:h-20">
+    <a href={homeHref} class="flex items-center gap-3 group">
+      <img
+        src={`${B}logos/slb-logo-white.svg`}
+        alt="SLB Logo"
+        class="h-10 w-auto transition-all duration-300 group-hover:scale-105 [.header-scrolled_&]:hidden"
+      />
+      <img
+        src={`${B}logos/slb-logo.svg`}
+        alt="SLB Logo"
+        class="h-10 w-auto transition-all duration-300 group-hover:scale-105 hidden [.header-scrolled_&]:block"
+      />
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-1">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class="relative px-4 py-2 text-sm font-medium text-white/90 hover:text-white [.header-scrolled_&]:text-ink-soft [.header-scrolled_&]:hover:text-brand-dark transition-colors after:content-[''] after:absolute after:left-4 after:right-4 after:bottom-1 after:h-px after:bg-brand after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300"
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href={ctaHref}
+        class="ml-4 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-ink shadow-sm hover:bg-brand-dark hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-brand/30"
+      >
+        Anfrage stellen
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </nav>
+
+    <button
+      id="nav-toggle"
+      class="lg:hidden p-2 text-white [.header-scrolled_&]:text-ink"
+      aria-label="Menü öffnen"
+    >
+      <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="hidden lg:hidden bg-white/95 backdrop-blur border-t border-black/5">
+    <div class="px-5 py-4 flex flex-col gap-1">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class="px-3 py-3 text-base font-medium text-white/90 hover:text-white [.header-scrolled_&]:text-ink-soft [.header-scrolled_&]:hover:text-brand-dark hover:bg-brand-light rounded-lg transition-colors"
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href={ctaHref}
+        class="mt-2 text-center rounded-full bg-brand px-5 py-3 text-sm font-semibold text-ink"
+      >
+        Anfrage stellen
+      </a>
+    </div>
+  </div>
+</header>

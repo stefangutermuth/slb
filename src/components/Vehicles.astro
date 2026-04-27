@@ -1,0 +1,83 @@
+---
+const vehicles = [
+  {
+    n: "01",
+    title: "Saug-/Drucktankzüge",
+    desc: "Flüssigkeitstransport mit und ohne Ausschubkolben. Volumen 24–27 m³ – ideal für pumpfähige Sonderabfälle.",
+    image: "/images/dsc-4578.jpg",
+    spec: "24 – 27 m³",
+  },
+  {
+    n: "02",
+    title: "Muldenkipper mit Anhänger",
+    desc: "Transport von bis zu 3 Containern à 7–15 m³. Flexibel einsetzbar für unterschiedlichste Schüttgüter.",
+    image: "/images/dsc-1215.jpg",
+    spec: "3 × 7–15 m³",
+  },
+  {
+    n: "03",
+    title: "Containerfahrzeuge mit Anhänger",
+    desc: "Transport von Abrollcontainern – flüssigkeitsdicht, mit Deckel oder Plane. 37–40 m³ Volumen.",
+    image: "/images/lkw3.png",
+    spec: "37 – 40 m³",
+  },
+  {
+    n: "04",
+    title: "Planensattel- & Wechselbrückenzüge",
+    desc: "Stückgut-Transport mit eigenen Wechsel- und Spezialbrücken (z. B. Kühlcontainer).",
+    image: "/images/lkw4.png",
+    spec: "Stückgut",
+  },
+];
+const B = import.meta.env.BASE_URL;
+---
+
+<section id="fahrzeuge" class="relative py-24 lg:py-32 bg-ink text-white overflow-hidden">
+  <div class="absolute -inset-y-32 inset-x-0 opacity-[0.08] pointer-events-none" data-parallax-y="0.45">
+    <img src={`${B}images/slb-33.jpg`} alt="" class="w-full h-full object-cover" />
+  </div>
+  <div class="absolute inset-0 bg-gradient-to-b from-ink via-ink/95 to-ink"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="max-w-3xl">
+      <div class="reveal text-xs font-bold tracking-[0.3em] uppercase text-brand mb-4">
+        Fuhrpark
+      </div>
+      <h2 class="reveal reveal-delay-1 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+        Vier Fahrzeug­kategorien für<br/>jeden Einsatz
+      </h2>
+      <p class="reveal reveal-delay-2 mt-6 text-lg text-white/85 leading-relaxed">
+        Modernste Spezialfahrzeuge – ausgelegt auf Sicherheit, Effizienz und
+        die Anforderungen des Gefahrgut-Transports.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-2 gap-6 lg:gap-8">
+      {vehicles.map((v) => (
+        <article class="reveal group relative overflow-hidden rounded-3xl bg-white text-ink border border-white/10 hover:shadow-2xl hover:shadow-brand/20 transition-all duration-500">
+          <div class="aspect-[16/10] overflow-hidden">
+            <img
+              src={v.image}
+              alt={v.title}
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+          </div>
+          <div class="absolute top-3 left-4 sm:top-5 sm:left-5 text-white font-bold text-sm tracking-widest num-badge drop-shadow-lg">
+            {v.n}
+          </div>
+          <div class="absolute top-3 right-3 sm:top-5 sm:right-5 inline-flex items-center rounded-full bg-brand text-ink px-2.5 py-1 text-[11px] sm:text-xs font-bold shadow-lg whitespace-nowrap">
+            {v.spec}
+          </div>
+          <div class="p-7 lg:p-8">
+            <h3 class="text-2xl font-bold text-ink mb-3 group-hover:text-brand-dark transition-colors">
+              {v.title}
+            </h3>
+            <p class="text-ink-soft leading-relaxed">{v.desc}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

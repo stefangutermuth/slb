@@ -1,0 +1,211 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "SLB – Sonderabfall-Logistik Bayern GmbH",
+  description = "Zuverlässige Sonderabfall-Logistik mit Verantwortung für Umwelt und Sicherheit. Spezialtransporte für gefährliche Abfälle in ganz Bayern.",
+} = Astro.props;
+const B = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${B}logos/slb-logo.svg`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div id="preloader" class="fixed inset-0 z-[100] flex items-center justify-center bg-ink">
+      <div class="absolute inset-0 opacity-[0.06] preloader-grid"></div>
+      <div class="relative flex flex-col items-center">
+        <div class="relative w-28 h-28 flex items-center justify-center">
+          <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#94c120" stroke-width="2" stroke-linecap="round"
+                    stroke-dasharray="289" stroke-dashoffset="289" class="preloader-ring"/>
+          </svg>
+          <img src={`${B}logos/slb-logo-white.svg`} alt="SLB" class="w-16 h-16 preloader-logo" />
+        </div>
+        <div class="mt-6 text-[10px] tracking-[0.4em] uppercase text-white/50 preloader-text">
+          Sonderabfall-Logistik Bayern
+        </div>
+      </div>
+    </div>
+
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <style>
+      .preloader-grid {
+        background-image:
+          linear-gradient(rgba(148,193,32,0.5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(148,193,32,0.5) 1px, transparent 1px);
+        background-size: 40px 40px;
+        mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      }
+      .preloader-ring {
+        animation: ringFill 1.6s cubic-bezier(.4,0,.2,1) forwards;
+      }
+      @keyframes ringFill {
+        from { stroke-dashoffset: 289; }
+        to   { stroke-dashoffset: 0; }
+      }
+      .preloader-logo {
+        animation: logoIn 0.9s cubic-bezier(.2,.8,.2,1) both, logoPulse 1.8s ease-in-out 0.9s infinite;
+      }
+      @keyframes logoIn {
+        from { opacity: 0; transform: scale(0.7); filter: blur(8px); }
+        to   { opacity: 1; transform: scale(1);   filter: blur(0);   }
+      }
+      @keyframes logoPulse {
+        0%,100% { transform: scale(1);    filter: drop-shadow(0 0 0 rgba(148,193,32,0)); }
+        50%     { transform: scale(1.05); filter: drop-shadow(0 0 14px rgba(148,193,32,0.55)); }
+      }
+      .preloader-text {
+        animation: fadeUp 0.7s ease-out 0.4s both;
+      }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: none; }
+      }
+      body.is-loaded #preloader {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.7s ease, visibility 0s linear 0.7s;
+      }
+      body:not(.is-loaded) {
+        overflow: hidden;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .preloader-ring, .preloader-logo, .preloader-text { animation: none !important; }
+        .preloader-ring { stroke-dashoffset: 0; }
+      }
+    </style>
+
+    <script is:inline>
+      // Preloader: hide after assets are ready, but enforce minimum display time
+      (function () {
+        const MIN_MS = 1100;
+        const start = performance.now();
+        const hide = () => {
+          const remain = Math.max(0, MIN_MS - (performance.now() - start));
+          setTimeout(() => document.body.classList.add("is-loaded"), remain);
+        };
+        if (document.readyState === "complete") hide();
+        else window.addEventListener("load", hide);
+        // Safety net: never longer than 4s
+        setTimeout(() => document.body.classList.add("is-loaded"), 4000);
+      })();
+      // Globaler Parallax: data-parallax-y="<intensity>" (z.B. 0.15)
+      (function () {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const els = Array.from(document.querySelectorAll("[data-parallax-y]"));
+        if (!els.length) return;
+        const items = els.map((el) => ({
+          el,
+          intensity: parseFloat(el.getAttribute("data-parallax-y") || "0.15"),
+          inView: false,
+        }));
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => {
+            const it = items.find((i) => i.el === e.target);
+            if (it) it.inView = e.isIntersecting;
+          }),
+          { rootMargin: "100px 0px 100px 0px" }
+        );
+        items.forEach((i) => io.observe(i.el));
+
+        const vh = () => window.innerHeight;
+        function tick() {
+          for (const it of items) {
+            if (!it.inView) continue;
+            const r = it.el.getBoundingClientRect();
+            const center = r.top + r.height / 2 - vh() / 2;
+            const offset = -(center / vh()) * (it.intensity * 220);
+            it.el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+          }
+          requestAnimationFrame(tick);
+        }
+        tick();
+      })();
+
+      // Counter-Animation für [data-counter]
+      (function () {
+        const els = document.querySelectorAll("[data-counter]");
+        if (!els.length) return;
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const animate = (el) => {
+          const target = el.getAttribute("data-counter") || "0";
+          const suffix = el.getAttribute("data-counter-suffix") || "";
+          const num = parseFloat(target);
+          if (isNaN(num) || reduce) { el.textContent = target + suffix; return; }
+          const dur = 1400;
+          const start = performance.now();
+          function step(now) {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            const v = num * eased;
+            const formatted = Number.isInteger(num) ? Math.round(v).toString() : v.toFixed(1);
+            el.textContent = formatted + suffix;
+            if (t < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        };
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { animate(e.target); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.4 });
+        els.forEach((el) => io.observe(el));
+      })();
+
+      // Reveal-on-scroll
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("is-visible");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+      // Header shrink on scroll
+      const header = document.getElementById("site-header");
+      const onScroll = () => {
+        if (!header) return;
+        if (window.scrollY > 24) header.classList.add("header-scrolled");
+        else header.classList.remove("header-scrolled");
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      // Mobile nav toggle
+      const navToggle = document.getElementById("nav-toggle");
+      const mobileNav = document.getElementById("mobile-nav");
+      navToggle?.addEventListener("click", () => {
+        mobileNav?.classList.toggle("hidden");
+      });
+      mobileNav?.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => mobileNav.classList.add("hidden"))
+      );
+    </script>
+  </body>
+</html>
