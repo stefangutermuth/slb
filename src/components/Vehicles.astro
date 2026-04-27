@@ -1,35 +1,35 @@
 ---
+const B = import.meta.env.BASE_URL;
 const vehicles = [
   {
     n: "01",
     title: "Saug-/Drucktankzüge",
     desc: "Flüssigkeitstransport mit und ohne Ausschubkolben. Volumen 24–27 m³ – ideal für pumpfähige Sonderabfälle.",
-    image: "/images/dsc-4578.jpg",
+    image: `${B}images/dsc-4578.jpg`,
     spec: "24 – 27 m³",
   },
   {
     n: "02",
     title: "Muldenkipper mit Anhänger",
     desc: "Transport von bis zu 3 Containern à 7–15 m³. Flexibel einsetzbar für unterschiedlichste Schüttgüter.",
-    image: "/images/dsc-1215.jpg",
+    image: `${B}images/dsc-1215.jpg`,
     spec: "3 × 7–15 m³",
   },
   {
     n: "03",
     title: "Containerfahrzeuge mit Anhänger",
     desc: "Transport von Abrollcontainern – flüssigkeitsdicht, mit Deckel oder Plane. 37–40 m³ Volumen.",
-    image: "/images/lkw3.png",
+    image: `${B}images/lkw3.png`,
     spec: "37 – 40 m³",
   },
   {
     n: "04",
     title: "Planensattel- & Wechselbrückenzüge",
     desc: "Stückgut-Transport mit eigenen Wechsel- und Spezialbrücken (z. B. Kühlcontainer).",
-    image: "/images/lkw4.png",
+    image: `${B}images/lkw4.png`,
     spec: "Stückgut",
   },
 ];
-const B = import.meta.env.BASE_URL;
 ---
 
 <section id="fahrzeuge" class="relative py-24 lg:py-32 bg-ink text-white overflow-hidden">
